@@ -152,30 +152,37 @@ public class formLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLimparMouseClicked
 
     private void btnLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLoginMouseClicked
-        String login = textLogin.getText();
-        char[] senhas = textSenha.getPassword();
-        String senha = new String(senhas);
-        formCadastro fC = new formCadastro();
-        formMenu fM = new formMenu();
+        int resposta = JOptionPane.showConfirmDialog(null, "Deseja continuar com esse usuário?", "Confirmar", JOptionPane.YES_NO_OPTION);
+        if (resposta == JOptionPane.YES_OPTION) {
+            String login = textLogin.getText();
+            char[] senhas = textSenha.getPassword();
+            String senha = new String(senhas);
+            formCadastro fC = new formCadastro();
+            formMenu fM = new formMenu();
 
-        UsuarioDao u = new UsuarioDao();
-        try {
-            usuario = u.validarLogin(login, senha);
-            if (usuario != null || (login.equals("admin") && senha.equals("1234"))) {
-                if (login.equals("admin") && senha.equals("1234")) {
-                    fC.setVisible(true);
-                }else{
-                    fM.setVisible(true);
-                    fM.setTitle("Bem vindo, jogador - " + usuario.idUsuario);
+            UsuarioDao u = new UsuarioDao();
+            try {
+                usuario = u.validarLogin(login, senha);
+                if (usuario != null || (login.equals("admin") && senha.equals("1234"))) {
+                    if (login.equals("admin") && senha.equals("1234")) {
+                        fC.setVisible(true);
+                    } else {
+                        fM.setVisible(true);
+                        fM.setTitle("Bem vindo, jogador - " + usuario.idUsuario);
+                    }
+
+                    this.setVisible(false);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Ususário ou Senha Inválidos!", "Erro de Operação", JOptionPane.WARNING_MESSAGE);
                 }
-                
-                this.setVisible(false);
-            } else {
-                JOptionPane.showMessageDialog(null, "Ususário ou Senha Inválidos!", "Erro de Operação", JOptionPane.WARNING_MESSAGE);
+            } catch (SQLException err) {
+                JOptionPane.showMessageDialog(null, err.getMessage());
             }
-        } catch (SQLException err) {
-            JOptionPane.showMessageDialog(null, err.getMessage());
+        }else{
+            
         }
+
+
     }//GEN-LAST:event_btnLoginMouseClicked
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
